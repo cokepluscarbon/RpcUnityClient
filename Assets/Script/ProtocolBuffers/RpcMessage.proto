@@ -1,0 +1,24 @@
+syntax = "proto3";
+package com.ckcb.gs;
+
+option java_package = "com.cpcb.gs";
+option java_outer_classname = "RpcMessage";
+
+message RpcRequest {
+  RequestHeader header = 1;
+  bytes content = 2;
+
+  message RequestHeader {
+    int32 rpcId = 1;
+    int32 reqId = 2;
+  }
+}
+
+message RpcResponse {
+  ResponseHeader header = 1;
+  bytes content = 2;
+
+  message ResponseHeader {
+    int32 reqId = 1;
+  }
+}
