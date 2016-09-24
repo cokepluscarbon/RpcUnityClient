@@ -97,11 +97,10 @@
     <Compile Include="Assets\Script\LitJson\JsonWriter.cs" />
     <Compile Include="Assets\Script\LitJson\Lexer.cs" />
     <Compile Include="Assets\Script\LitJson\ParserToken.cs" />
-    <Compile Include="Assets\Script\Net\NetMonobehavior.cs" />
+    <Compile Include="Assets\Script\Net\NetMonoBehavior.cs" />
     <Compile Include="Assets\Script\Net\RpcReader.cs" />
     <Compile Include="Assets\Script\Net\RpcWriter.cs" />
     <Compile Include="Assets\Script\ProtocolBuffers\RpcMessage.cs" />
-    <Compile Include="Assets\Script\Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\DLL\Google.ProtocolBuffers.Serialization.xml" />
