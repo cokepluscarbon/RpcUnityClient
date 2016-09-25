@@ -21,11 +21,16 @@ public class NetMonoBehavior : MonoBehaviour
         try
         {
             tcpClient = new TcpClient();
-            tcpClient.Connect(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8080));
+            tcpClient.SendBufferSize = 20;
+            tcpClient.SendTimeout = 100000;
+            tcpClient.Connect("127.0.0.1", 8080);
 
-            writer = new BinaryWriter(tcpClient.GetStream());
-            reader = new BinaryReader(tcpClient.GetStream());
+            writer = new BinaryWriter(tcpClient.GetStream(), System.Text.Encoding.UTF8);
+            reader = new BinaryReader(tcpClient.GetStream(), System.Text.Encoding.UTF8);
             Debug.Log("连接服务器成功");
+
+            new Thread(SendWorkThreadFunction).Start();
+            // new Thread(ReceiveWorkThreadFunction).Start();
         }
         catch
         {
@@ -33,9 +38,6 @@ public class NetMonoBehavior : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        new Thread(SendWorkThreadFunction).Start();
-        new Thread(ReceiveWorkThreadFunction).Start();
     }
 
     public void SendWorkThreadFunction()
@@ -44,22 +46,30 @@ public class NetMonoBehavior : MonoBehaviour
         {
             try
             {
-                string content = "I am Unity Client!";
-                RpcRequest.Types.RequestHeader requestHeader = RpcRequest.Types.RequestHeader.CreateBuilder().SetRpcId(5).SetReqId(1).Build();
-                RpcRequest rpcRequest = RpcRequest.CreateBuilder().SetHeader(requestHeader).SetContent(ByteString.CopyFromUtf8(content)).Build();
+                RpcWriter rpcWriter = new RpcWriter();
+                rpcWriter.Write(5);
+                rpcWriter.Write("I am Unity Client!");
 
+                RpcRequest.Types.RequestHeader requestHeader = RpcRequest.Types.RequestHeader.CreateBuilder().SetRpcId(5).SetReqId(1).Build();
+                RpcRequest rpcRequest = RpcRequest.CreateBuilder().SetHeader(requestHeader).SetContent(ByteString.CopyFrom(rpcWriter.GetBytes())).Build();
 
                 byte[] byteArray = rpcRequest.ToByteArray();
-                writer.Write(byteArray.Length);
-                writer.Write(byteArray);
-                writer.Flush();
+                short mLen = (short)byteArray.Length;
 
-                Thread.Sleep(1000);
+                writer.Write(IPAddress.HostToNetworkOrder(mLen));
+                writer.Write(byteArray);
+
+                writer.Flush();
             }
             catch (Exception ex)
             {
                 Debug.LogError(ex.Message);
+                Debug.LogError(ex.StackTrace);
+                Debug.LogError(ex.HelpLink);
+                Thread.CurrentThread.Abort();
             }
+
+            Thread.Sleep(5000);
         }
     }
 
@@ -81,6 +91,7 @@ public class NetMonoBehavior : MonoBehaviour
             catch (Exception ex)
             {
                 Debug.LogError(ex.Message);
+                Thread.CurrentThread.Abort();
             }
         }
     }

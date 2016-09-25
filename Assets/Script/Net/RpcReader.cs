@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.IO;
+using System.Net;
 using System.Collections;
 
 public class RpcReader
@@ -12,53 +13,52 @@ public class RpcReader
         reader = new BinaryReader(new MemoryStream(bytes));
     }
 
-    public T Read<T>()
+    public byte ReadByte()
     {
-        Type type = typeof(T);
+        return reader.ReadByte();
+    }
 
-        if (type == typeof(byte))
-        {
-            return (T)(object)reader.ReadByte();
-        }
-        else if (type == typeof(bool))
-        {
-            return (T)(object)reader.ReadBoolean();
-        }
-        else if (type == typeof(short))
-        {
-            return (T)(object)reader.ReadInt16();
-        }
-        else if (type == typeof(int))
-        {
-            return (T)(object)reader.ReadInt32();
-        }
-        else if (type == typeof(long))
-        {
-            return (T)(object)reader.ReadInt64();
-        }
-        else if (type == typeof(float))
-        {
-            return (T)(object)reader.ReadDecimal();
-        }
-        else if (type == typeof(double))
-        {
-            return (T)(object)reader.ReadDecimal();
-        }
-        else if (type == typeof(string))
-        {
-            int len = Read<int>();
-            byte[] bytes = new byte[len];
+    public short ReadShort()
+    {
+        return IPAddress.NetworkToHostOrder(reader.ReadInt16());
+    }
 
-            return (T)(object)System.Text.Encoding.UTF8.GetString(bytes);
-        }
-        else if (type == typeof(Object))
-        {
-            string json = Read<string>();
+    public int ReadInt()
+    {
+        return IPAddress.NetworkToHostOrder(reader.ReadInt32());
+    }
 
-            return LitJson.JsonMapper.ToObject<T>(json);
-        }
+    public long ReadLong()
+    {
+        return IPAddress.NetworkToHostOrder(reader.ReadInt64());
+    }
 
-        return default(T);
+    public float ReadFloat()
+    {
+        return reader.ReadSingle();
+    }
+
+    public double ReadDouble()
+    {
+        return reader.ReadDouble();
+    }
+
+    public byte[] ReadBytes()
+    {
+        short len = ReadShort();
+        return reader.ReadBytes(len);
+    }
+
+    public string ReadString()
+    {
+        byte[] bytes = ReadBytes();
+        return System.Text.Encoding.UTF8.GetString(bytes);
+    }
+
+    public object ReadObject<T>()
+    {
+        string json = ReadString();
+        return LitJson.JsonMapper.ToObject<T>(json);
     }
 
 }

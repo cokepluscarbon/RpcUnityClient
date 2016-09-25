@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Text;
+using System.Net;
 
 public class RpcWriter
 {
@@ -27,11 +28,13 @@ public class RpcWriter
 
     public void Write(int value)
     {
+        value = IPAddress.HostToNetworkOrder(value);
         writer.Write(value);
     }
 
     public void Write(long value)
     {
+        value = IPAddress.HostToNetworkOrder(value);
         writer.Write(value);
     }
 
@@ -42,14 +45,19 @@ public class RpcWriter
 
     public void Write(string value)
     {
-        byte[] bytes = Encoding.ASCII.GetBytes(value);
-        writer.Write(bytes.Length);
+        byte[] bytes = Encoding.UTF8.GetBytes(value);
+        Write(bytes);
     }
 
     public void Write(object obj)
     {
-        //byte[] bytes = Encoding.ASCII.GetBytes(Lot);
-        //writer.Write(bytes.Length);
+        byte[] bytes = Encoding.UTF8.GetBytes(LitJson.JsonMapper.ToJson(obj));
+        Write(bytes);
+    }
+
+    public void Write(byte[] bytes) {
+        Write((short)bytes.Length);
+        writer.Write(bytes);
     }
 
     public byte[] GetBytes()
