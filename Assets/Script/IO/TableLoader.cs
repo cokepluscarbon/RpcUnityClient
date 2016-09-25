@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using LitJson;
 
 public class TableLoader
 {
@@ -38,17 +39,39 @@ public class TableLoader
                         if (headerMapping.ContainsKey(name))
                         {
                             int index = headerMapping[name];
-                            if (values.Length > index) {
+                            if (values.Length > index)
+                            {
                                 string val = values[index];
                                 Type fieldType = field.FieldType;
                                 Debug.Log(fieldType);
-                                if (fieldType == typeof(int))
+
+                                if (fieldType == typeof(byte))
+                                {
+                                    field.SetValue(deploy, byte.Parse(val));
+                                }
+                                else if (fieldType == typeof(int))
                                 {
                                     field.SetValue(deploy, int.Parse(val));
                                 }
-                                else if (fieldType == typeof(string))
+                                else if (fieldType == typeof(short))
                                 {
-                                    field.SetValue(deploy, val);
+                                    field.SetValue(deploy, short.Parse(val));
+                                }
+                                else if (fieldType == typeof(long))
+                                {
+                                    field.SetValue(deploy, long.Parse(val));
+                                }
+                                else if (fieldType == typeof(double))
+                                {
+                                    field.SetValue(deploy, double.Parse(val));
+                                }
+                                else if (fieldType == typeof(JsonData))
+                                {
+                                    field.SetValue(deploy, LitJson.JsonMapper.ToObject(val));
+                                }
+                                else if (fieldType == typeof(object))
+                                {
+                                    field.SetValue(deploy, LitJson.JsonMapper.ToObject<object>(val));
                                 }
                             }
                         }
