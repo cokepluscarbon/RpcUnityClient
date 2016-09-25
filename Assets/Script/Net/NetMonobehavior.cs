@@ -10,12 +10,15 @@ using System.IO;
 
 public class NetMonoBehavior : MonoBehaviour
 {
+    private Dictionary<int, Action<RpcReader>> callbacks = new Dictionary<int, Action<RpcReader>>();
     private TcpClient tcpClient;
     private BinaryWriter writer;
     private BinaryReader reader;
 
     void Awake()
     {
+        TableLoader.Load<int>("");
+
         DontDestroyOnLoad(gameObject);
 
         try
@@ -38,38 +41,31 @@ public class NetMonoBehavior : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
     }
 
     public void SendWorkThreadFunction()
     {
         while (true)
         {
-            try
+            Net.Rpc("rpc_get_player", 1, reader =>
             {
-                RpcWriter rpcWriter = new RpcWriter();
-                rpcWriter.Write(5);
-                rpcWriter.Write("I am Unity Client!");
+                Debug.Log("================");
+            });
 
-                RpcRequest.Types.RequestHeader requestHeader = RpcRequest.Types.RequestHeader.CreateBuilder().SetRpcId(5).SetReqId(1).Build();
-                RpcRequest rpcRequest = RpcRequest.CreateBuilder().SetHeader(requestHeader).SetContent(ByteString.CopyFrom(rpcWriter.GetBytes())).Build();
+            Debug.Log("Send Count = " + Net.Instance.sendQueue.Count);
+            if (Net.Instance.sendQueue.Count > 0)
+            {
+                RpcRequest request = Net.Instance.sendQueue.Dequeue();
 
-                byte[] byteArray = rpcRequest.ToByteArray();
-                short mLen = (short)byteArray.Length;
+                byte[] byteArray = request.ToByteArray();
 
-                writer.Write(IPAddress.HostToNetworkOrder(mLen));
+                writer.Write(IPAddress.HostToNetworkOrder(byteArray.Length));
                 writer.Write(byteArray);
 
                 writer.Flush();
             }
-            catch (Exception ex)
-            {
-                Debug.LogError(ex.Message);
-                Debug.LogError(ex.StackTrace);
-                Debug.LogError(ex.HelpLink);
-                Thread.CurrentThread.Abort();
-            }
-
-            Thread.Sleep(5000);
+            Thread.Sleep(1000);
         }
     }
 
