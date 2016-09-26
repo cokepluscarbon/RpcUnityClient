@@ -61,21 +61,6 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
-    </Reference>
     <Reference Include="Google.ProtocolBuffers">
       <HintPath>Assets\DLL\Google.ProtocolBuffers.dll</HintPath>
     </Reference>
@@ -100,7 +85,7 @@
     <Compile Include="Assets\Script\LitJson\ParserToken.cs" />
     <Compile Include="Assets\Script\Net\Net.cs" />
     <Compile Include="Assets\Script\Net\NetListener.cs" />
-    <Compile Include="Assets\Script\Net\NetMonoBehavior.cs" />
+    <Compile Include="Assets\Script\Net\NetMonobehavior.cs" />
     <Compile Include="Assets\Script\Net\RpcListener.cs" />
     <Compile Include="Assets\Script\Net\RpcReader.cs" />
     <Compile Include="Assets\Script\Net\RpcWriter.cs" />

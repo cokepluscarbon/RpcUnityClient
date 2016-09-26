@@ -26,24 +26,29 @@ public class TableLoader
                 {
                     headerMapping = GetHeaderMapping(record);
                 }
-                else {
+                else
+                {
                     string[] values = record.Split(new string[] { "\t" }, StringSplitOptions.None);
                     Debug.Log("values -> " + values);
+
+                    if (values.Length != headerMapping.Count)
+                    {
+                        continue;
+                    }
 
                     FieldInfo[] fields = typeof(T).GetFields();
                     T deploy = Activator.CreateInstance<T>();
                     foreach (FieldInfo field in fields)
                     {
-                        Debug.Log(field.Name);
                         string name = field.Name;
+
                         if (headerMapping.ContainsKey(name))
                         {
                             int index = headerMapping[name];
                             if (values.Length > index)
                             {
-                                string val = values[index];
+                                string val = values[index].Trim();
                                 Type fieldType = field.FieldType;
-                                Debug.Log(fieldType);
 
                                 if (fieldType == typeof(byte))
                                 {
@@ -67,18 +72,18 @@ public class TableLoader
                                 }
                                 else if (fieldType == typeof(JsonData))
                                 {
-                                    field.SetValue(deploy, LitJson.JsonMapper.ToObject(val));
+                                    //field.SetValue(deploy, LitJson.JsonMapper.ToObject(val));
                                 }
                                 else if (fieldType == typeof(object))
                                 {
-                                    field.SetValue(deploy, LitJson.JsonMapper.ToObject<object>(val));
+                                    //field.SetValue(deploy, LitJson.JsonMapper.ToObject<object>(val));
                                 }
                             }
                         }
                     }
 
                     ProtocolDeploy protocolDeploy = (ProtocolDeploy)(object)deploy;
-                    Debug.Log("---> " + protocolDeploy.id + ":" + protocolDeploy.rpc);
+                    Debug.Log(LitJson.JsonMapper.ToJson(protocolDeploy));
                 }
             }
         }

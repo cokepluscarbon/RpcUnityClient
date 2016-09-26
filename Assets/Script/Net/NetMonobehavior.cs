@@ -8,7 +8,7 @@ using com.ckcb.gs;
 using Google.ProtocolBuffers;
 using System.IO;
 
-public class NetMonoBehavior : MonoBehaviour
+public class NetMonobehavior : MonoBehaviour
 {
     private Dictionary<int, Action<RpcReader>> callbacks = new Dictionary<int, Action<RpcReader>>();
     private TcpClient tcpClient;
@@ -21,6 +21,11 @@ public class NetMonoBehavior : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+        NetStart();
+    }
+
+    private void NetStart()
+    {
         try
         {
             tcpClient = new TcpClient();
@@ -41,7 +46,6 @@ public class NetMonoBehavior : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
     }
 
     public void SendWorkThreadFunction()
