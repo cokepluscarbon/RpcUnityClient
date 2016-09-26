@@ -70,20 +70,46 @@ public class TableLoader
                                 {
                                     field.SetValue(deploy, double.Parse(val));
                                 }
+                                else if (fieldType == typeof(Enum))
+                                {
+                                    //field.SetValue(deploy, val != "0" ? true : false);
+                                }
+                                else if (fieldType == typeof(List<bool>))
+                                {
+                                    field.SetValue(deploy, LitJson.JsonMapper.ToObject<List<bool>>(val));
+                                }
+                                else if (fieldType == typeof(List<int>))
+                                {
+                                    field.SetValue(deploy, LitJson.JsonMapper.ToObject<List<int>>(val));
+                                }
+                                else if (fieldType == typeof(List<long>))
+                                {
+                                    field.SetValue(deploy, LitJson.JsonMapper.ToObject<List<long>>(val));
+                                }
+                                else if (fieldType == typeof(List<string>))
+                                {
+                                    field.SetValue(deploy, LitJson.JsonMapper.ToObject<List<string>>(val));
+                                }
                                 else if (fieldType == typeof(JsonData))
                                 {
                                     //field.SetValue(deploy, LitJson.JsonMapper.ToObject(val));
                                 }
                                 else if (fieldType == typeof(object))
                                 {
-                                    //field.SetValue(deploy, LitJson.JsonMapper.ToObject<object>(val));
+                                    //field.SetValue(deploy, LitJson.JsonMapper.ToObject(fieldType, val));
+                                    Debug.Log("===========");
                                 }
+
+                                Debug.Log("FieldType = " + fieldType);
                             }
                         }
                     }
 
-                    ProtocolDeploy protocolDeploy = (ProtocolDeploy)(object)deploy;
-                    Debug.Log(LitJson.JsonMapper.ToJson(protocolDeploy));
+                    if (deploy != null)
+                    {
+                        ProtocolDeploy protocolDeploy = (ProtocolDeploy)(object)deploy;
+                        Debug.Log(JsonMapper.ToJson(protocolDeploy));
+                    }
                 }
             }
         }

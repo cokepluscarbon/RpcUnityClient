@@ -17,6 +17,7 @@ public class ProtocolDeploy : BaseDeploy
     public List<bool> tests3;
     public JsonData jsonObject;
     public TestEnum testEnum = TestEnum.A;
+    public InnerObject object_;
 
     public string toString()
     {
@@ -29,4 +30,17 @@ public class ProtocolDeploy : BaseDeploy
     {
         A, B, C, D
     }
+
+    public class InnerObject
+    {
+        public int id;
+        public string name;
+
+        public override string ToString()
+        {
+            return "InnerObject [id=" + id + ", name=" + name + "]";
+        }
+    }
+
+
 }
