@@ -61,6 +61,21 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Common">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Common">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Google.ProtocolBuffers">
       <HintPath>Assets\DLL\Google.ProtocolBuffers.dll</HintPath>
     </Reference>
@@ -69,6 +84,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\EventCenter\EventCenter.cs" />
     <Compile Include="Assets\Script\IO\BaseDeploy.cs" />
     <Compile Include="Assets\Script\IO\Deploy.cs" />
     <Compile Include="Assets\Script\IO\ProtocolDeploy.cs" />
@@ -90,6 +106,7 @@
     <Compile Include="Assets\Script\Net\RpcReader.cs" />
     <Compile Include="Assets\Script\Net\RpcWriter.cs" />
     <Compile Include="Assets\Script\ProtocolBuffers\RpcMessage.cs" />
+    <Compile Include="Assets\Script\Test\TestEventCenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\DLL\Google.ProtocolBuffers.Serialization.xml" />
