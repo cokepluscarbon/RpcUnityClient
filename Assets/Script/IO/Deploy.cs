@@ -9,4 +9,9 @@ public class Deploy : Attribute
     {
         this.path = path;
     }
+
+    public static T GetDeploy<T>(int id) where T : BaseDeploy
+    {
+        return default(T);
+    }
 }
