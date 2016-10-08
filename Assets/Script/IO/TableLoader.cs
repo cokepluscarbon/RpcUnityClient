@@ -50,6 +50,7 @@ public class TableLoader
                                 string val = values[index].Trim();
                                 Type fieldType = field.FieldType;
 
+                                Debug.Log(fieldType);
                                 if (fieldType == typeof(byte))
                                 {
                                     field.SetValue(deploy, byte.Parse(val));
@@ -76,7 +77,7 @@ public class TableLoader
                                 }
                                 else if (fieldType == typeof(Enum))
                                 {
-                                    field.SetValue(deploy, val != "0" ? true : false);
+                                    field.SetValue(deploy, Enum.Parse(fieldType, val));
                                 }
                                 else if (fieldType == typeof(List<bool>))
                                 {
@@ -96,11 +97,11 @@ public class TableLoader
                                 }
                                 else if (fieldType == typeof(JsonData))
                                 {
-                                    field.SetValue(deploy, LitJson.JsonMapper.ToObject(val));
+                                    // field.SetValue(deploy, LitJson.JsonMapper.ToObject(val));
                                 }
                                 else if (fieldType == typeof(object))
                                 {
-                                    field.SetValue(deploy, LitJson.JsonMapper.ToObject(fieldType, val));
+                                    //field.SetValue(deploy, LitJson.JsonMapper.ToObject(fieldType, val));
                                     Debug.Log("===========");
                                 }
 
@@ -112,7 +113,7 @@ public class TableLoader
                     if (deploy != null)
                     {
                         ProtocolDeploy protocolDeploy = (ProtocolDeploy)(object)deploy;
-                        Debug.Log(protocolDeploy.rpc + ":" + protocolDeploy.jsonObject + ":" + protocolDeploy.object_);
+                        Debug.Log(JsonMapper.ToJson(protocolDeploy));
                     }
                 }
             }

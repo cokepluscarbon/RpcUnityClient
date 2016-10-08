@@ -19,7 +19,7 @@ public class ProtocolDeploy : BaseDeploy
     public TestEnum testEnum = TestEnum.A;
     public InnerObject object_;
 
-    public string toString()
+    public string ToString()
     {
         return "ProtocolDeploy [id=" + id + ", rpc=" + rpc + ", encrypt=" + encrypt + ", testLong=" + testLong
                 + ", testFloat=" + testFloat + ", testByte=" + testByte + ", testDouble=" + testDouble + ", tests="
