@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections.Generic;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
@@ -12,6 +13,18 @@ public class Deploy : Attribute
 
     public static T GetDeploy<T>(int id) where T : BaseDeploy
     {
-        return default(T);
+        Type type = typeof(T);
+
+        object[] attributes = type.GetCustomAttributes(false);
+        for (int i = 0; i < attributes.Length; i++)
+        {
+            if (attributes[i] is Deploy)
+            {
+                Deploy deploy = (Deploy)attributes[i];
+                return TableLoader.Load<T>(deploy.path, id);
+            }
+        }
+
+        return null;
     }
 }

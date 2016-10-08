@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[Deploy("uiView")]
 public class UIViewDeploy : BaseDeploy
 {
     public int id;

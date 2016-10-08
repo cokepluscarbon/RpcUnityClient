@@ -17,8 +17,6 @@ public class NetMonobehavior : MonoBehaviour
 
     void Awake()
     {
-        TableLoader.Load<ProtocolDeploy>("");
-
         DontDestroyOnLoad(gameObject);
 
         NetStart();

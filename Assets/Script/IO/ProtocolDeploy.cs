@@ -3,6 +3,7 @@ using System.Collections;
 using LitJson;
 using System.Collections.Generic;
 
+[Deploy("protocol")]
 public class ProtocolDeploy : BaseDeploy
 {
     public int id;
